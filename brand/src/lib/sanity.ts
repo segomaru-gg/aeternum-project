@@ -1,8 +1,17 @@
 import { createClient } from "@sanity/client";
 
+const projectId =
+    (typeof import.meta !== 'undefined' && import.meta.env?.PUBLIC_SANITY_PROJECT_ID) ||
+    process.env.PUBLIC_SANITY_PROJECT_ID;
+
+const dataset =
+    (typeof import.meta !== 'undefined' && import.meta.env?.PUBLIC_SANITY_DATASET) ||
+    process.env.PUBLIC_SANITY_DATASET ||
+    "production";
+
 export const client = createClient({
-    projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
-    dataset: import.meta.env.PUBLIC_SANITY_DATASET || "production",
-    useCdn: true, // set to `false` to bypass the edge cache
-    apiVersion: "2023-05-03", // use current date (YYYY-MM-DD) to target the latest API version
+    projectId,
+    dataset,
+    useCdn: true,
+    apiVersion: "2023-05-03",
 });
