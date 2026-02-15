@@ -1,5 +1,7 @@
 import Stripe from 'stripe';
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-    apiVersion: '2025-01-27-acacia' as any,
+const apiKey = import.meta.env?.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY;
+
+export const stripe = new Stripe(apiKey || '', {
+    apiVersion: '2024-12-18.acacia' as any,
 });

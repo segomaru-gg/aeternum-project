@@ -1,0 +1,101 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { client } from '../../lib/sanity';
+
+const posts = await client.fetch(`*[_type == "post"] | order(publishedAt desc)`);
+---
+
+<Layout>
+	<div class="journal-container">
+		<header class="journal-header fade-in-up">
+			<h1 class="zen-mincho">Journal</h1>
+			<p class="subtitle">思索の断片、文化の備忘録</p>
+		</header>
+
+		<div class="posts-grid">
+			{posts.length > 0 ? (
+				posts.map((post: any) => (
+					<article class="post-card fade-in-up">
+						<time datetime={post.publishedAt}>
+							{new Date(post.publishedAt).toLocaleDateString('ja-JP')}
+						</time>
+						<h2 class="zen-mincho">
+							<a href={`/journal/${post.slug?.current}`}>{post.title}</a>
+						</h2>
+						<p class="excerpt">{post.excerpt}</p>
+					</article>
+				))
+			) : (
+				<div class="empty-state">
+					<p>記す言葉を収蔵中です。</p>
+				</div>
+			)}
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.journal-container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 6rem 2rem;
+	}
+
+	.journal-header {
+		text-align: center;
+		margin-bottom: 8rem;
+	}
+
+	h1 {
+		font-size: 3rem;
+		letter-spacing: 0.3em;
+		margin-bottom: 1.5rem;
+	}
+
+	.subtitle {
+		color: var(--text-muted);
+		letter-spacing: 0.1em;
+	}
+
+	.posts-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 6rem;
+	}
+
+	.post-card time {
+		font-family: monospace;
+		font-size: 0.9rem;
+		color: var(--accent-primary);
+		display: block;
+		margin-bottom: 1rem;
+	}
+
+	.post-card h2 {
+		font-size: 1.8rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.post-card h2 a {
+		text-decoration: none;
+		color: var(--text-primary);
+		transition: color 0.3s;
+	}
+
+	.post-card h2 a:hover {
+		color: var(--accent-primary);
+	}
+
+	.excerpt {
+		line-height: 2;
+		color: var(--text-muted);
+		font-size: 1rem;
+	}
+
+	.empty-state {
+		text-align: center;
+		padding: 10rem 0;
+		color: var(--text-muted);
+		border: 1px dashed rgba(255, 255, 255, 0.05);
+	}
+</style>

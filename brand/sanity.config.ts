@@ -1,6 +1,8 @@
 import { defineConfig } from 'sanity';
 import { deskTool } from 'sanity/desk';
 import shushuanItem from './schema/shushuanItem';
+import service from './schema/service';
+import post from './schema/post';
 
 export default defineConfig({
     name: 'aeternum-studio',
@@ -13,6 +15,6 @@ export default defineConfig({
     plugins: [deskTool()],
 
     schema: {
-        types: [shushuanItem],
+        types: [shushuanItem, service, post],
     },
 });

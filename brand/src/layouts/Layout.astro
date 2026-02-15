@@ -1,5 +1,11 @@
 ---
 import '../styles/colors.css';
+
+interface Props {
+	title?: string;
+}
+
+const { title = 'Aeternum' } = Astro.props;
 ---
 
 <!doctype html>
@@ -9,7 +15,7 @@ import '../styles/colors.css';
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Aeternum | 蒐集庵</title>
+		<title>{title === 'Aeternum' ? title : `${title} | Aeternum`}</title>
 
 		<!-- Google Fonts: Zen Old Mincho -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +23,22 @@ import '../styles/colors.css';
 		<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700&display=swap" rel="stylesheet">
 	</head>
 	<body>
-		<slot />
+		<header class="global-header">
+			<nav class="nav-container">
+				<a href="/" class="brand-logo zen-mincho">Aeternum</a>
+				<ul class="nav-links">
+					<li><a href="/catalog">蒐集庵</a></li>
+					<li><a href="/nexus">NEXUS</a></li>
+					<li><a href="/journal">Journal</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<slot />
+		</main>
+		<footer class="global-footer">
+			<p class="zen-mincho">© 2026 Aeternum – 意味・構造・表現の循環</p>
+		</footer>
 	</body>
 </html>
 
@@ -33,6 +54,68 @@ import '../styles/colors.css';
 		font-family: 'Zen Old Mincho', serif;
 		-webkit-font-smoothing: antialiased;
 		transition: background-color 0.5s ease;
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+	}
+
+	main {
+		flex: 1;
+	}
+
+	.global-header {
+		padding: 2rem;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+		backdrop-filter: blur(10px);
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		background: rgba(18, 18, 15, 0.8);
+	}
+
+	.nav-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.brand-logo {
+		font-size: 1.5rem;
+		text-decoration: none;
+		color: var(--accent-primary);
+		letter-spacing: 0.2rem;
+		font-weight: 700;
+	}
+
+	.nav-links {
+		display: flex;
+		list-style: none;
+		gap: 3rem;
+		margin: 0;
+		padding: 0;
+	}
+
+	.nav-links a {
+		text-decoration: none;
+		color: var(--text-muted);
+		font-size: 0.9rem;
+		letter-spacing: 0.1rem;
+		transition: color 0.3s;
+	}
+
+	.nav-links a:hover {
+		color: var(--accent-primary);
+	}
+
+	.global-footer {
+		padding: 4rem 2rem;
+		text-align: center;
+		border-top: 1px solid rgba(255, 255, 255, 0.05);
+		color: var(--text-muted);
+		font-size: 0.8rem;
+		letter-spacing: 0.1rem;
 	}
 
 	.fade-in-up {
