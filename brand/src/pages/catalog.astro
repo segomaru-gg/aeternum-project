@@ -1,6 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { AERTERNUM_ITEMS, AERTERNUM_TAGS } from '../data/items';
+import { client } from '../lib/sanity';
+import imageUrlBuilder from '@sanity/image-url';
+
+const builder = imageUrlBuilder(client);
+function urlFor(source: any) {
+  return builder.image(source);
+}
+
+// Fetch items from Sanity
+const items = await client.fetch(`*[_type == "shushuanItem"]{
+  _id,
+  name,
+  category,
+  era,
+  story,
+  status,
+  price,
+  tags,
+  "imageUrl": mainImage.asset->url
+}`);
+
+const tags = [
+  { id: 'all', label: 'All' },
+  { id: 'Antique', label: 'Antique' },
+  { id: 'Music', label: 'Music' },
+  { id: 'Word', label: 'Word' },
+];
 ---
 
 <Layout>
@@ -33,22 +59,21 @@ import { AERTERNUM_ITEMS, AERTERNUM_TAGS } from '../data/items';
 		<!-- Right Pane: Grid -->
 		<main class="grid-pane">
 			<div class="tag-filter-container">
-				<button class="tag-filter active" data-tag="all">All</button>
-				{AERTERNUM_TAGS.map(tag => (
+				{tags.map(tag => (
 					<button class="tag-filter" data-tag={tag.id}>{tag.label}</button>
 				))}
 			</div>
 
 			<section id="item-grid" class="item-grid">
-				{AERTERNUM_ITEMS.map((item, index) => (
+				{items.map((item: any, index: number) => (
 					<article 
 						class="item-card fade-in-up" 
 						style={`animation-delay: ${index * 0.1}s`}
 						data-item={JSON.stringify(item)}
 					>
 						<div class="card-image-wrapper">
-							{item.images[0] ? (
-								<img src={item.images[0]} alt={item.name} class="card-img" />
+							{item.imageUrl ? (
+								<img src={item.imageUrl} alt={item.name} class="card-img" />
 							) : (
 								<div class="card-placeholder"></div>
 							)}
@@ -91,9 +116,9 @@ import { AERTERNUM_ITEMS, AERTERNUM_TAGS } from '../data/items';
 					if (previewCategory) previewCategory.textContent = data.category;
 					
 					if (previewImg) {
-						if (data.images && data.images[0]) {
+						if (data.imageUrl) {
 							previewImg.style.display = 'block';
-							previewImg.innerHTML = `<img src="${data.images[0]}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 2px;">`;
+							previewImg.innerHTML = `<img src="${data.imageUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 2px;">`;
 						} else {
 							previewImg.style.display = 'none';
 						}
@@ -116,7 +141,7 @@ import { AERTERNUM_ITEMS, AERTERNUM_TAGS } from '../data/items';
 
 			items.forEach(card => {
 				const data = JSON.parse(card.getAttribute('data-item') || '{}');
-				if (targetTag === 'all' || data.tags?.includes(targetTag)) {
+				if (targetTag === 'all' || data.category === targetTag) {
 					(card as HTMLElement).style.display = 'block';
 				} else {
 					(card as HTMLElement).style.display = 'none';

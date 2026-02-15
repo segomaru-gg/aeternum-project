@@ -1,5 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { client } from '../lib/sanity';
+
+// Fetch the 3 most recent items for the landing page
+const featuredItems = await client.fetch(`*[_type == "shushuanItem"][0...3]{
+  _id,
+  name,
+  "imageUrl": mainImage.asset->url
+}`);
 ---
 
 <Layout>
