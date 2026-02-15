@@ -24,12 +24,20 @@ const { title = 'Aeternum' } = Astro.props;
 	</head>
 	<body>
 		<header class="global-header">
-			<nav class="nav-container">
+			<div class="header-inner">
 				<a href="/" class="brand-logo zen-mincho">Aeternum</a>
-				<ul class="nav-links">
-					<li><a href="/catalog">蒐集庵</a></li>
-					<li><a href="/nexus">NEXUS</a></li>
-					<li><a href="/journal">Journal</a></li>
+				
+				<button class="menu-toggle" aria-label="Menu">
+					<span class="bar"></span>
+					<span class="bar"></span>
+				</button>
+			</div>
+
+			<nav class="full-menu">
+				<ul class="nav-links zen-mincho">
+					<li><a href="/catalog" data-desc="Sensory EC">蒐集庵</a></li>
+					<li><a href="/nexus" data-desc="B2B Strategy">NEXUS</a></li>
+					<li><a href="/journal" data-desc="Insight">Journal</a></li>
 				</ul>
 			</nav>
 		</header>
@@ -39,6 +47,18 @@ const { title = 'Aeternum' } = Astro.props;
 		<footer class="global-footer">
 			<p class="zen-mincho">© 2026 Aeternum – 意味・構造・表現の循環</p>
 		</footer>
+
+		<script>
+			const menuToggle = document.querySelector('.menu-toggle');
+			const fullMenu = document.querySelector('.full-menu');
+			const body = document.body;
+
+			menuToggle?.addEventListener('click', () => {
+				menuToggle.classList.toggle('active');
+				fullMenu?.classList.toggle('active');
+				body.classList.toggle('menu-open');
+			});
+		</script>
 	</body>
 </html>
 
@@ -65,48 +85,128 @@ const { title = 'Aeternum' } = Astro.props;
 
 	.global-header {
 		padding: 2rem;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-		backdrop-filter: blur(10px);
-		position: sticky;
+		position: fixed;
 		top: 0;
-		z-index: 100;
-		background: rgba(18, 18, 15, 0.8);
+		left: 0;
+		width: 100%;
+		z-index: 1000;
+		box-sizing: border-box;
 	}
 
-	.nav-container {
+	.header-inner {
+		max-width: 1400px;
+		margin: 0 auto;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		max-width: 1200px;
-		margin: 0 auto;
 	}
 
 	.brand-logo {
 		font-size: 1.5rem;
 		text-decoration: none;
-		color: var(--accent-primary);
+		color: #ffffff;
 		letter-spacing: 0.2rem;
 		font-weight: 700;
+		position: relative;
+		z-index: 1001;
+	}
+
+	.menu-toggle {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.5rem;
+		z-index: 1001;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.bar {
+		display: block;
+		width: 24px;
+		height: 1px;
+		background: #ffffff;
+		transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+	}
+
+	.menu-toggle.active .bar:nth-child(1) {
+		transform: translateY(3.5px) rotate(45deg);
+	}
+
+	.menu-toggle.active .bar:nth-child(2) {
+		transform: translateY(-3.5px) rotate(-45deg);
+	}
+
+	.full-menu {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100vh;
+		background: var(--bg-primary);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		visibility: hidden;
+		transition: all 0.5s;
+		z-index: 1000;
+	}
+
+	.full-menu.active {
+		opacity: 1;
+		visibility: visible;
 	}
 
 	.nav-links {
-		display: flex;
 		list-style: none;
-		gap: 3rem;
-		margin: 0;
 		padding: 0;
+		text-align: center;
+	}
+
+	.nav-links li {
+		margin: 2rem 0;
+		overflow: hidden;
 	}
 
 	.nav-links a {
 		text-decoration: none;
-		color: var(--text-muted);
-		font-size: 0.9rem;
-		letter-spacing: 0.1rem;
-		transition: color 0.3s;
+		color: #ffffff;
+		font-size: 3rem;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		display: block;
+		transition: all 0.5s;
+		position: relative;
+	}
+
+	.nav-links a::after {
+		content: attr(data-desc);
+		position: absolute;
+		bottom: -1rem;
+		left: 50%;
+		transform: translateX(-50%);
+		font-size: 0.8rem;
+		letter-spacing: 0.3em;
+		text-transform: uppercase;
+		opacity: 0;
+		transition: all 0.5s;
+		color: var(--accent-primary);
 	}
 
 	.nav-links a:hover {
 		color: var(--accent-primary);
+		transform: translateY(-10px);
+	}
+
+	.nav-links a:hover::after {
+		opacity: 1;
+		bottom: -1.5rem;
+	}
+
+	body.menu-open {
+		overflow: hidden;
 	}
 
 	.global-footer {
