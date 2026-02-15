@@ -1,0 +1,120 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+	<div class="container">
+		<header class="fade-in-up">
+			<div class="logo-container">
+				<img src="/assets/logo.svg" alt="Aeternum Logo" class="logo" />
+			</div>
+			<nav>
+				<a href="/catalog" class="nav-link-vertical">目録</a>
+			</nav>
+		</header>
+
+		<main>
+			<section class="hero fade-in-up">
+				<div class="structure-bg"></div>
+				<div class="hero-subtitle">構造と表現</div>
+				<h1 class="hero-title">蒐集庵</h1>
+			</section>
+
+			<section class="concept fade-in-up">
+				<p>
+					この世に「非合理」は存在しない。<br />
+					短期的・局所的な視点を超え、<br />
+					長い時間軸の中で、<br />
+					意味は静かに接続される。
+				</p>
+				<div class="vertical-text">
+					<p>
+						もの言わぬ古き物たち。<br />
+						その背後にある構造。<br />
+						時間に耐えうる思想。<br />
+						<br />
+						ここは、それらを蒐集し、<br />
+						編み直すための庵。
+					</p>
+				</div>
+			</section>
+		</main>
+
+		<footer class="fade-in-up">
+			<p>&copy; 2026 Aeternum. All Rights Reserved.</p>
+		</footer>
+	</div>
+</Layout>
+
+<style>
+	.container {
+		padding: 4rem 2rem;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		margin-bottom: 8rem;
+	}
+
+	.logo {
+		width: 120px;
+		filter: brightness(0) saturate(100%) invert(32%) sepia(16%) border-left(10px) hue-rotate(69deg) brightness(91%) contrast(85%); /* Approximate Evergreen */
+	}
+
+	.nav-link-vertical {
+		writing-mode: vertical-rl;
+		text-decoration: none;
+		color: var(--accent-primary);
+		letter-spacing: 0.3em;
+		font-size: 1.1rem;
+		transition: opacity 0.3s;
+	}
+
+	.nav-link-vertical:hover {
+		opacity: 0.7;
+	}
+
+	.hero {
+		position: relative;
+		margin-bottom: 10rem;
+	}
+
+	.hero-subtitle {
+		font-size: 1rem;
+		letter-spacing: 0.5em;
+		color: var(--text-muted);
+		margin-bottom: 1rem;
+	}
+
+	.hero-title {
+		font-size: 4rem;
+		font-weight: 500;
+		margin: 0;
+		color: var(--accent-primary);
+	}
+
+	.concept {
+		line-height: 2.5;
+		font-size: 1.1rem;
+		letter-spacing: 0.1em;
+	}
+
+	.vertical-text {
+		writing-mode: vertical-rl;
+		margin-top: 4rem;
+		height: 400px;
+		color: var(--accent-secondary);
+	}
+
+	footer {
+		margin-top: 10rem;
+		border-top: 1px solid var(--text-muted);
+		padding-top: 2rem;
+		font-size: 0.8rem;
+		color: var(--text-muted);
+	}
+</style>
