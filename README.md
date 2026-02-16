@@ -1,3 +1,6 @@
+#注意
+aeternum-project の README に「このプロジェクトは AI-Cockpit に統合されました。今後は [AI-Cockpit] で開発を継続します」
+---
 # Aeternum
 
 意味・構造・表現を循環させ、文化を資産化するプロジェクト。
